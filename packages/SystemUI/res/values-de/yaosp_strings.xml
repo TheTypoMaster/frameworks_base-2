@@ -20,4 +20,10 @@
     <string name="screenshot_notification_delete">Löschen</string>
     <string name="screenshot_delete_confirmation">Screenshot gelöscht.</string>
 
+    <!-- Interruption level: None. [CHAR LIMIT=20] -->
+    <string name="interruption_level_silent">Ruhe</string>
+
+    <!-- Zen mode: No interruptions title, with a warning about alarms. [CHAR LIMIT=60] -->
+    <string name="zen_silent_with_warning">Keine Unterbrechungen, ausser Alarmton.</string>
+
 </resources>
