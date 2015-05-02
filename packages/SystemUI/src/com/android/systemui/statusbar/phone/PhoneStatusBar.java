@@ -1,6 +1,4 @@
 /*
- * Copyright (c) 2012-2014 The Linux Foundation. All rights reserved.
- * Not a Contribution.
  * Copyright (C) 2010 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -68,6 +66,7 @@ import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
 import android.media.session.PlaybackState;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -127,6 +126,7 @@ import com.android.internal.statusbar.StatusBarIcon;
 import com.android.keyguard.KeyguardHostView.OnDismissAction;
 import com.android.keyguard.ViewMediatorCallback;
 import com.android.systemui.BatteryMeterView;
+import com.android.systemui.BatteryMeterView.BatteryMeterMode;
 import com.android.systemui.DemoMode;
 import com.android.systemui.EventLogTags;
 import com.android.systemui.FontSizeUtils;
@@ -259,6 +259,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     BluetoothControllerImpl mBluetoothController;
     SecurityControllerImpl mSecurityController;
     BatteryController mBatteryController;
+    private BatteryMeterView mBatteryView;
+    private TextView mBatteryLevel;
     LocationControllerImpl mLocationController;
     NetworkControllerImpl mNetworkController;
     HotspotControllerImpl mHotspotController;
@@ -388,6 +390,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     int mLinger;
     int mInitialTouchX;
     int mInitialTouchY;
+    private boolean mShowBatteryText;
+    private boolean mShowBatteryTextCharging;
+    private boolean mBatteryIsCharging;
+    private int mBatteryChargeLevel;
 
     // for disabling the status bar
     int mDisabled = 0;
@@ -429,11 +435,25 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.SCREEN_BRIGHTNESS_MODE),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BATTERY_STYLE),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
         @Override
-        public void onChange(boolean selfChange) {
+        public void onChange(boolean selfChange, Uri uri) {
+            if (uri.equals(Settings.System.getUriFor(
+                            Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT)) ||
+                            uri.equals(Settings.System.getUriFor(
+                            Settings.System.STATUS_BAR_BATTERY_STYLE))) {
+                        mBatteryView.updateBatteryIconSettings();
+                        mHeader.updateBatteryIconSettings();
+                        mKeyguardStatusBar.updateBatteryIconSettings();
+            }
             update();
         }
 
@@ -445,9 +465,46 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mBrightnessControl = !autoBrightness && Settings.System.getIntForUser(
                     resolver, Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL,
                     0, UserHandle.USER_CURRENT) == 1;
+            loadShowBatteryTextSetting();
+            updateBatteryLevelText();
+            mBatteryLevel.setVisibility(mShowBatteryText ? View.VISIBLE : View.GONE);
         }
     }
 
+    private void loadShowBatteryTextSetting() {
+        ContentResolver resolver = mContext.getContentResolver();
+        mShowBatteryText = Settings.System.getInt(resolver,
+                Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT, 0) == 2;
+        int batteryStyle = Settings.System.getInt(resolver,
+                Settings.System.STATUS_BAR_BATTERY_STYLE, 0);
+        switch (batteryStyle) {
+            case 4:
+                //meterMode = BatteryMeterMode.BATTERY_METER_GONE;
+                mShowBatteryText = false;
+                mShowBatteryTextCharging = false;
+                break;
+
+            case 6:
+                //meterMode = BatteryMeterMode.BATTERY_METER_TEXT;
+                mShowBatteryText = true;
+                mShowBatteryTextCharging = true;
+                break;
+
+            default:
+                mShowBatteryTextCharging = false;
+                break;
+        }
+    }
+
+    private void updateBatteryLevelText() {
+        if (mBatteryIsCharging & mShowBatteryTextCharging) {
+            mBatteryLevel.setText(mContext.getResources().getString(
+                    R.string.battery_level_template_charging, mBatteryChargeLevel));
+        } else {
+            mBatteryLevel.setText(mContext.getResources().getString(
+                    R.string.battery_level_template, mBatteryChargeLevel));
+        }
+    }
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
     private boolean mUserSetup = false;
@@ -901,6 +958,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mHandlerThread = new HandlerThread(TAG, Process.THREAD_PRIORITY_BACKGROUND);
         mHandlerThread.start();
 
+        mBatteryLevel = (TextView) mStatusBarView.findViewById(
+                                                           R.id.battery_level_text);
+
         // Other icons
         mLocationController = new LocationControllerImpl(mContext); // will post a notification
         mBatteryController = new BatteryController(mContext);
@@ -914,7 +974,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
             @Override
             public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
-                // noop
+                mBatteryIsCharging = charging;
+                mBatteryChargeLevel = level;
+                loadShowBatteryTextSetting();
+                updateBatteryLevelText();
+                mHeader.updateBatteryLevel(level, charging);
+                mKeyguardStatusBar.updateBatteryLevel(level, charging);
             }
         });
         mHotspotController = new HotspotControllerImpl(mContext);
@@ -1084,8 +1149,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mUserInfoController.reloadUserInfo();
 
         mHeader.setBatteryController(mBatteryController);
-        ((BatteryMeterView) mStatusBarView.findViewById(R.id.battery)).setBatteryController(
-                mBatteryController);
+        mBatteryView = (BatteryMeterView) mStatusBarView.findViewById(R.id.battery);
+        mBatteryView.setBatteryController(mBatteryController);
         mKeyguardStatusBar.setBatteryController(mBatteryController);
         mHeader.setNextAlarmController(mNextAlarmController);
 
@@ -3497,6 +3562,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         updateShowSearchHoldoff();
         updateRowStates();
         mScreenPinningRequest.onConfigurationChanged();
+
+        FontSizeUtils.updateFontSize(mBatteryLevel, R.dimen.battery_level_text_size);
     }
 
     @Override
