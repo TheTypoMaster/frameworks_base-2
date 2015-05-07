@@ -26,4 +26,36 @@
     <!-- Zen mode: No interruptions title, with a warning about alarms. [CHAR LIMIT=60] -->
     <string name="zen_silent_with_warning">Keine Unterbrechungen, ausser Alarmton.</string>
 
+    <!-- Dialog title for navigation bar button selection -->
+    <string name="navbar_dialog_title">Eine Aktion zuweisen</string>
+    <string name="navbar_home_button">Home Taste</string>
+    <string name="navbar_recent_button">Letzte Apps Taste</string>
+    <string name="navbar_search_button">Suchen Taste</string>
+    <string name="navbar_back_button">Zurück Taste</string>
+    <string name="navbar_empty_button">Leere Taste</string>
+    <string name="navbar_menu_conditional_button">Menü Taste (autom. versteckt)</string>
+    <string name="navbar_menu_always_button">Menü Taste (immer sichtbar)</string>
+    <string name="navbar_menu_big_button">Menü Taste</string>
+    <string name="navbar_power_button">Power Taste</string>
+
+    <string name="accessibility_dpad_left">Cursor links</string>
+    <string name="accessibility_dpad_right">Cursor rechts</string>
+
+    <!-- Navigation ring shortcuts -->
+    <string name="navigation_ring_title">Schnellstart-Verknüpfungen</string>
+    <string name="navring_target_reset_message">Alle benutzerangelegte Navigationsverknüpfungen löschen und Standard wiederherstellen?</string>
+    <string name="navring_target_reset">Navigationsverknüpfungen auf Standard zurücksetzten</string>
+    <string name="navring_action_open_ime_switcher">Öffne Tastaturauswahl</string>
+    <string name="navring_action_kill_app">App beenden</string>
+    <string name="navring_action_none">Nichts</string>
+    <string name="navring_action_take_screenshot">Screenshot machen</string>
+    <string name="navring_action_ring_vibrate">Klingeln/Vibration</string>
+    <string name="navring_action_ring_silent">Klingeln/Still</string>
+    <string name="navring_action_ring_vibrate_silent">Klingeln/Vibration/Still</string>
+    <string name="navring_action_screen_off">Display aus</string>
+    <string name="navring_action_google_now">Google Now</string>
+    <string name="navring_choose_action_title">App auswählen</string>
+    <string name="select_application">App nutzen</string>
+    <string name="lockscreen_target_empty">Leer</string>
+
 </resources>
