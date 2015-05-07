@@ -22,4 +22,35 @@
     <!-- Zen mode: No interruptions title, with a warning about alarms. [CHAR LIMIT=60] -->
     <string name="zen_silent_with_warning">Pas d\'interruptions, excepté alarmes.</string>
 
+    <!-- Dialog title for navigation bar button selection -->
+    <string name="navbar_dialog_title">Choisir l\'action à assigner</string>
+    <string name="navbar_home_button">Button Home</string>
+    <string name="navbar_recent_button">Button Récents</string>
+    <string name="navbar_search_button">Button Recherche</string>
+    <string name="navbar_back_button">Button Retour</string>
+    <string name="navbar_empty_button">Button Vide</string>
+    <string name="navbar_menu_conditional_button">Button Menu (masquer autom.)</string>
+    <string name="navbar_menu_always_button">Button Menu (Tjr. affiché)</string>
+    <string name="navbar_menu_big_button">Button Menu</string>
+    <string name="navbar_power_button">Bouton d\'alimentation</string>
+
+    <string name="accessibility_dpad_left">Curseur gauche</string>
+    <string name="accessibility_dpad_right">Curseur droit</string>
+
+    <!-- Navigation ring shortcuts -->
+    <string name="navigation_ring_title">Raccourci de démarrage rapide</string>
+    <string name="navring_target_reset_message">Effacer tous les raccourcis créés par l\'utilisateur et restaurer aux raccourcis par défaut ?</string>
+    <string name="navring_target_reset">Remise à défaut des raccourcis de barre de navigation</string>
+    <string name="navring_action_open_ime_switcher">Ouvrir le sélectionneur de clavier</string>
+    <string name="navring_action_kill_app">Tuer l\'application</string>
+    <string name="navring_action_none">Aucun</string>
+    <string name="navring_action_take_screenshot">Capturer l\'écran</string>
+    <string name="navring_action_ring_vibrate">Sonnerie/Vibreur</string>
+    <string name="navring_action_ring_silent">Sonnerie/Silencieux</string>
+    <string name="navring_action_ring_vibrate_silent">Sonnerie/Vibreur/Silencieux</string>
+    <string name="navring_action_screen_off">Couper écran</string>
+    <string name="navring_action_google_now">Google Now</string>
+    <string name="navring_choose_action_title">Choisir action</string>
+    <string name="select_application">Sélectionner application</string>
+
 </resources>
