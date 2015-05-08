@@ -1431,6 +1431,8 @@ public class KeyguardViewMediator extends SystemUI {
                 // done in KeyguardHostView.
                 flags |= StatusBarManager.DISABLE_RECENT;
                 flags |= StatusBarManager.DISABLE_SEARCH;
+                flags |= StatusBarManager.DISABLE_MENU_BIG;
+                flags |= StatusBarManager.DISABLE_ALWAYS_MENU;
             }
             if (isShowingAndNotOccluded()) {
                 flags |= StatusBarManager.DISABLE_HOME;

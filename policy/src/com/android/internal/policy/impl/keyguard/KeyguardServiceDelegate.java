@@ -310,7 +310,10 @@ public class KeyguardServiceDelegate {
                 | View.STATUS_BAR_DISABLE_BACK
                 | View.STATUS_BAR_DISABLE_RECENT
                 | View.STATUS_BAR_DISABLE_EXPAND
-                | View.STATUS_BAR_DISABLE_SEARCH);
+                | View.STATUS_BAR_DISABLE_SEARCH
+                | View.STATUS_BAR_DISABLE_MENU_BIG
+                | View.STATUS_BAR_DISABLE_ALWAYS_MENU
+                | View.STATUS_BAR_DISABLE_POWER);
         return view;
     }
 
