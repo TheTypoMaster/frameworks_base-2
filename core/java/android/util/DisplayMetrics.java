@@ -124,7 +124,10 @@ public class DisplayMetrics {
     @Deprecated
     public static int DENSITY_DEVICE;
 
-    public static int DENSITY_CURRENT;
+    /**
+     * @hide
+     */
+ 	public static int DENSITY_CURRENT;
 
     static {
         DENSITY_DEVICE = SystemProperties.getInt("qemu.sf.lcd_density", SystemProperties
@@ -221,6 +224,9 @@ public class DisplayMetrics {
      */
     public float noncompatYdpi;
 
+    /**
+     * @hide
+     */
     public void updateDensity() {
         density = DENSITY_CURRENT / (float) DENSITY_DEFAULT;
         densityDpi = DENSITY_CURRENT;
@@ -326,6 +332,9 @@ public class DisplayMetrics {
             ", xdpi=" + xdpi + ", ydpi=" + ydpi + "}";
     }
 
+    /**
+     * @hide
+     */
     public static int getDeviceDensity() {
         return DENSITY_CURRENT;
     }
