@@ -2106,6 +2106,12 @@ public final class Settings {
         public static final String LOCKSCREEN_SHORTCUTS_LONGPRESS =
                 "lockscreen_shortcuts_longpress";
 
+        /**
+         * Timeout for ambient display notification
+         * @hide
+         */
+        public static final String DOZE_TIMEOUT = "doze_timeout";
+
         /** 
          * Whether to allow one finger quick settings expansion on the right side of the statusbar.
          *
