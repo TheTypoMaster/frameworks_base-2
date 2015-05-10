@@ -1248,6 +1248,11 @@ public final class Settings {
             MOVED_TO_SECURE.add(Secure.QS_TILES);
             MOVED_TO_SECURE.add(Secure.QS_USE_MAIN_TILES);
             MOVED_TO_SECURE.add(Secure.QS_SHOW_BRIGHTNESS_SLIDER);
+
+            MOVED_TO_SECURE.add(Secure.SEARCH_PANEL_ENABLED);
+            for (String s : Secure.NAVIGATION_RING_TARGETS) {
+                MOVED_TO_SECURE.add(s);
+            }
         }
 
         private static final HashSet<String> MOVED_TO_GLOBAL;
@@ -1818,6 +1823,12 @@ public final class Settings {
          * @hide
          */
         public static final int ADVANCED_SETTINGS_DEFAULT = 0;
+
+        /**
+         * Navigation controls to Use
+         * @hide
+         */
+        public static final String NAV_BUTTONS = "nav_buttons";
 
         /**
          * @deprecated Use {@link android.provider.Settings.Global#AIRPLANE_MODE_ON} instead
@@ -3593,6 +3604,20 @@ public final class Settings {
         @Deprecated
         public static final String WIFI_WATCHDOG_PING_TIMEOUT_MS =
             Secure.WIFI_WATCHDOG_PING_TIMEOUT_MS;
+
+        /**
+         * boolean value. toggles using arrow key locations on nav bar
+         * as left and right dpad keys
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_MENU_ARROW_KEYS = "navigation_bar_menu_arrow_keys";
+
+        /**
+         * boolean value. toggles automatically rearranging (autopadding)
+         * navbar buttons
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_AUTOPADDING = "navigation_bar_autopadding";
 
         /**
          * Whether flip action during incomming call should mute or dismiss
@@ -5629,6 +5654,22 @@ public final class Settings {
          * @hide
          */
         public static final String QS_USE_FOUR_COLUMNS = "qs_use_four_columns";
+
+        /**
+         * Custom navring actions
+         * @hide
+         */
+        public static final String[] NAVIGATION_RING_TARGETS = new String[] {
+                "navigation_ring_targets_0",
+                "navigation_ring_targets_1",
+                "navigation_ring_targets_2",
+        };
+
+        /**
+         * Whether search panel is enabled.
+         * @hide
+         */
+        public static final String SEARCH_PANEL_ENABLED = "search_panel_enabled";
 
         /**
          * This are the settings to be backed up.
